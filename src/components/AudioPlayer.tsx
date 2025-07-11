@@ -8,6 +8,7 @@ import {
   Platform,
   NativeModules,
   NativeEventEmitter,
+  Image,
 } from 'react-native';
 import { Colors } from '../constants/colors';
 import { useAudiobook } from '../hooks/useAudiobook';
@@ -40,10 +41,12 @@ export const AudioPlayer: React.FC = () => {
       loadTrackInNativePlayer();
     }
     return cleanupEventListeners;
-  }, [currentChapter]);
+  }, [currentChapter, currentChapterIndex]);
 
   const setupNativeEventListeners = () => {
     if (!AudioPlayerModule) return;
+    
+    cleanupEventListeners();
     
     eventEmitter.current = new NativeEventEmitter(AudioPlayerModule);
     
@@ -102,11 +105,18 @@ export const AudioPlayer: React.FC = () => {
       return;
     }
 
-    setPlayerState(prev => ({ ...prev, isLoading: true, playbackState: 'loading' }));
+    setPlayerState(prev => ({ 
+      ...prev, 
+      isLoading: true, 
+      playbackState: 'loading',
+      position: 0
+    }));
 
     try {
+      const audioSource = Image.resolveAssetSource(currentChapter.audioFile);
+      
       const trackData = {
-        url: currentChapter.audioUrl,
+        url: audioSource.uri,
         title: currentChapter.title,
         duration: currentChapter.duration,
         chapterIndex: currentChapterIndex,
@@ -162,12 +172,20 @@ export const AudioPlayer: React.FC = () => {
   };
 
   const nextChapter = async () => {
+    if (playerState.isPlaying) {
+      await pause();
+    }
+    
     if (audiobook && currentChapterIndex < audiobook.audiobook.chapters.length - 1) {
       setCurrentChapterIndex(prev => prev + 1);
     }
   };
 
   const previousChapter = async () => {
+    if (playerState.isPlaying) {
+      await pause();
+    }
+    
     if (currentChapterIndex > 0) {
       setCurrentChapterIndex(prev => prev - 1);
     }
@@ -204,11 +222,22 @@ export const AudioPlayer: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.architectureBadge}>
         <Text style={styles.architectureText}>
-          React Native UI + Native {Platform.OS.toUpperCase()} Audio
+          React Native UI + Native {Platform.OS == 'ios' ? 'iOS' : 'Android'} Audio
         </Text>
       </View>
 
       <View style={styles.trackInfo}>
+        <View style={styles.coverArtContainer}>
+          <Image 
+            source={audiobook.audiobook.coverArt as any}
+            style={styles.coverArt}
+            resizeMode="cover"
+            onError={() => console.log('Cover art failed to load')}
+          />
+          <View style={styles.coverArtPlaceholder}>
+            <Text style={styles.placeholderText}>🎧</Text>
+          </View>
+        </View>
         <Text style={styles.trackTitle}>{audiobook.audiobook.title}</Text>
         <Text style={styles.trackSubtitle}>{currentChapter.title}</Text>
         <Text style={styles.authorText}>by {audiobook.audiobook.author}</Text>
@@ -247,13 +276,6 @@ export const AudioPlayer: React.FC = () => {
           <Text style={styles.controlButtonText}>⏮</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity 
-          style={styles.controlButton}
-          onPress={() => seek(Math.max(0, playerState.position - 15))}
-        >
-          <Text style={styles.skipText}>-15s</Text>
-        </TouchableOpacity>
-        
         <TouchableOpacity
           style={[styles.controlButton, styles.playButton]}
           onPress={playerState.isPlaying ? pause : play}
@@ -266,13 +288,6 @@ export const AudioPlayer: React.FC = () => {
               {playerState.isPlaying ? '⏸' : '▶️'}
             </Text>
           )}
-        </TouchableOpacity>
-
-        <TouchableOpacity 
-          style={styles.controlButton}
-          onPress={() => seek(Math.min(playerState.duration, playerState.position + 30))}
-        >
-          <Text style={styles.skipText}>+30s</Text>
         </TouchableOpacity>
         
         <TouchableOpacity 
@@ -291,14 +306,6 @@ export const AudioPlayer: React.FC = () => {
         <Text style={styles.chapterInfoText}>
           Chapter {currentChapterIndex + 1} of {audiobook.audiobook.chapters.length}
         </Text>
-      </View>
-
-      <View style={styles.bridgeContainer}>
-        <Text style={styles.bridgeTitle}>Bridge Architecture:</Text>
-        <Text style={styles.bridgeText}>• RN sends audiobook data to native</Text>
-        <Text style={styles.bridgeText}>• Native {Platform.OS} handles audio playback</Text>
-        <Text style={styles.bridgeText}>• Progress events flow back to RN UI</Text>
-        <Text style={styles.bridgeText}>• Best of both: RN flexibility + Native performance</Text>
       </View>
 
       {playerState.error && (
@@ -353,6 +360,37 @@ const styles = StyleSheet.create({
   trackInfo: {
     alignItems: 'center',
     marginBottom: 40,
+  },
+  coverArtContainer: {
+    position: 'relative',
+    marginBottom: 20,
+  },
+  coverArt: {
+    width: 200,
+    height: 200,
+    borderRadius: 12,
+    backgroundColor: Colors.neutral.lightGray,
+    shadowColor: Colors.shadow.light,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  coverArtPlaceholder: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: 200,
+    height: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 12,
+    backgroundColor: Colors.background.secondary,
+    zIndex: -1,
+  },
+  placeholderText: {
+    fontSize: 48,
+    color: Colors.text.secondary,
   },
   trackTitle: {
     fontSize: 20,
@@ -453,23 +491,6 @@ const styles = StyleSheet.create({
   chapterInfoText: {
     fontSize: 14,
     color: Colors.text.secondary,
-  },
-  bridgeContainer: {
-    backgroundColor: Colors.background.secondary,
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 10,
-  },
-  bridgeTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.text.primary,
-    marginBottom: 12,
-  },
-  bridgeText: {
-    fontSize: 14,
-    color: Colors.text.secondary,
-    marginBottom: 4,
   },
   errorBanner: {
     backgroundColor: Colors.status.error,

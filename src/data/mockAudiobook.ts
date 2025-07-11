@@ -39,16 +39,6 @@ export const mockAudiobook = {
     playbackInfo: {
       bitrate: 128,
       format: "mp3",
-      qualityLevels: {
-        high: {
-          bitrate: 256,
-          baseUrl: "local"
-        },
-        medium: {
-          bitrate: 128,
-          baseUrl: "local"
-        }
-      }
     },
     userProgress: {
       currentPosition: 0,

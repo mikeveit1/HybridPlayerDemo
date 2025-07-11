@@ -38,8 +38,22 @@ class AudioPlayerModule: RCTEventEmitter {
         }
     }
     
+    private func cleanupCurrentPlayer() {
+        stopProgressTimer()
+        
+        if let player = audioPlayer {
+            if player.isPlaying {
+                player.stop()
+            }
+            audioPlayer?.delegate = nil
+            audioPlayer = nil
+        }
+    }
+    
     @objc
     func loadTrack(_ trackData: [String: Any]) {
+        cleanupCurrentPlayer()
+        
         currentTrackData = trackData
         
         guard let urlString = trackData["url"] as? String,
@@ -131,48 +145,99 @@ class AudioPlayerModule: RCTEventEmitter {
     }
     
     private func loadAudioFromURL(_ url: URL) {
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-                
-                if let error = error {
-                    self.sendEvent(withName: "onError", body: [
-                        "message": "Failed to load audio: \(error.localizedDescription)"
-                    ])
-                    return
-                }
-                
-                guard let data = data else {
-                    self.sendEvent(withName: "onError", body: [
-                        "message": "No audio data received"
-                    ])
-                    return
-                }
-                
-                do {
-                    self.audioPlayer = try AVAudioPlayer(data: data)
-                    self.audioPlayer?.delegate = self
-                    self.audioPlayer?.prepareToPlay()
+        if url.scheme == "file" || url.isFileURL {
+            loadLocalAudio(url)
+        } else {
+            URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+                DispatchQueue.main.async {
+                    guard let self = self else { return }
                     
-                    self.sendEvent(withName: "onTrackLoaded", body: [
-                        "duration": self.audioPlayer?.duration ?? 0
-                    ])
+                    if let error = error {
+                        self.sendEvent(withName: "onError", body: [
+                            "message": "Failed to load audio: \(error.localizedDescription)"
+                        ])
+                        return
+                    }
                     
-                    self.sendEvent(withName: "onPlaybackStateChanged", body: ["state": "idle"])
+                    if let httpResponse = response as? HTTPURLResponse {
+                        if httpResponse.statusCode != 200 {
+                            self.sendEvent(withName: "onError", body: [
+                                "message": "HTTP error \(httpResponse.statusCode)"
+                            ])
+                            return
+                        }
+                    }
                     
-                } catch {
-                    self.sendEvent(withName: "onError", body: [
-                        "message": "Failed to create audio player: \(error.localizedDescription)"
-                    ])
+                    guard let data = data else {
+                        self.sendEvent(withName: "onError", body: [
+                            "message": "No audio data received"
+                        ])
+                        return
+                    }
+                    
+                    if data.count < 100 {
+                        self.sendEvent(withName: "onError", body: [
+                            "message": "Invalid audio data - file too small"
+                        ])
+                        return
+                    }
+                    
+                    do {
+                        self.cleanupCurrentPlayer()
+                        
+                        self.audioPlayer = try AVAudioPlayer(data: data)
+                        self.audioPlayer?.delegate = self
+                        self.audioPlayer?.prepareToPlay()
+                        
+                        self.sendEvent(withName: "onTrackLoaded", body: [
+                            "duration": self.audioPlayer?.duration ?? 0
+                        ])
+                        
+                        self.sendEvent(withName: "onPlaybackStateChanged", body: ["state": "idle"])
+                        
+                    } catch {
+                        self.sendEvent(withName: "onError", body: [
+                            "message": "Failed to create audio player: \(error.localizedDescription)"
+                        ])
+                    }
                 }
-            }
-        }.resume()
+            }.resume()
+        }
+    }
+
+    private func loadLocalAudio(_ url: URL) {
+        do {
+            cleanupCurrentPlayer()
+            
+            let data = try Data(contentsOf: url)
+            self.audioPlayer = try AVAudioPlayer(data: data)
+            self.audioPlayer?.delegate = self
+            self.audioPlayer?.prepareToPlay()
+            
+            self.sendEvent(withName: "onTrackLoaded", body: [
+                "duration": self.audioPlayer?.duration ?? 0
+            ])
+            
+            self.sendEvent(withName: "onPlaybackStateChanged", body: ["state": "idle"])
+            
+        } catch {
+            self.sendEvent(withName: "onError", body: [
+                "message": "Failed to load local audio: \(error.localizedDescription)"
+            ])
+        }
     }
     
     private func startProgressTimer() {
         stopProgressTimer()
-        progressTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
-            self?.updateProgress()
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.progressTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+                self?.updateProgress()
+            }
+            
+            if let timer = self?.progressTimer {
+                RunLoop.main.add(timer, forMode: .common)
+            }
         }
     }
     
@@ -191,14 +256,19 @@ class AudioPlayerModule: RCTEventEmitter {
     }
     
     deinit {
-        stopProgressTimer()
-        audioPlayer = nil
+        cleanupCurrentPlayer()
     }
 }
 
 extension AudioPlayerModule: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         stopProgressTimer()
+        
+        sendEvent(withName: "onProgressUpdate", body: [
+            "position": player.duration,
+            "duration": player.duration
+        ])
+        
         sendEvent(withName: "onPlaybackStateChanged", body: ["state": "idle"])
     }
     
