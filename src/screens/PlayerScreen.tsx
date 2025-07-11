@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: Colors.text.primary,
     borderBottomWidth: 2,
-    borderBottomColor: Colors.primary.orange,
+    borderBottomColor: Colors.primary.blue,
     paddingBottom: 4,
   },
   inactiveTab: {

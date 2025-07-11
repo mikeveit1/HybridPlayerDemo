@@ -11,8 +11,7 @@ export const Colors = {
     inverse: '#1A1A1A',
   },
   primary: {
-    orange: '#007AFF',
-    blue: '#32ADE6',
+    blue: '#007AFF',
   },
   neutral: {
     lightGray: '#48484A',

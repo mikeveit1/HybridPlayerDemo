@@ -197,7 +197,7 @@ export const AudioPlayer: React.FC = () => {
     return (
       <View style={styles.container}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={Colors.primary.orange} />
+          <ActivityIndicator size="large" color={Colors.primary.blue} />
           <Text style={styles.loadingText}>Loading audiobook...</Text>
         </View>
       </View>
@@ -220,7 +220,6 @@ export const AudioPlayer: React.FC = () => {
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      {/* Hero Card */}
       <View style={styles.heroCard}>
         <View style={styles.coverContainer}>
           <Image 
@@ -244,13 +243,11 @@ export const AudioPlayer: React.FC = () => {
         </View>
       </View>
 
-      {/* Now Playing */}
       <View style={styles.nowPlayingCard}>
         <Text style={styles.sectionTitle}>Now Playing</Text>
         <Text style={styles.chapterTitle}>{currentChapter.title}</Text>
         <Text style={styles.narratorText}>Narrated by {audiobook.audiobook.narrator}</Text>
         
-        {/* Progress */}
         <View style={styles.progressSection}>
           <View style={styles.progressBar}>
             <View 
@@ -266,14 +263,13 @@ export const AudioPlayer: React.FC = () => {
           </View>
         </View>
 
-        {/* Controls */}
         <View style={styles.controlsContainer}>
           <TouchableOpacity 
             style={[styles.controlButton, currentChapterIndex === 0 && styles.disabledButton]}
             onPress={previousChapter}
             disabled={currentChapterIndex === 0}
           >
-            <Text style={styles.controlIcon}>⏮</Text>
+            <Text style={styles.controlIcon}>⏮︎</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -285,7 +281,7 @@ export const AudioPlayer: React.FC = () => {
               <ActivityIndicator size="small" color={Colors.text.inverse} />
             ) : (
               <Text style={styles.playIcon}>
-                {playerState.isPlaying ? '⏸' : '▶️'}
+                {playerState.isPlaying ? '⏸︎' : '▶︎'}
               </Text>
             )}
           </TouchableOpacity>
@@ -298,12 +294,11 @@ export const AudioPlayer: React.FC = () => {
             onPress={nextChapter}
             disabled={currentChapterIndex === audiobook.audiobook.chapters.length - 1}
           >
-            <Text style={styles.controlIcon}>⏭</Text>
+            <Text style={styles.controlIcon}>⏭︎</Text>
           </TouchableOpacity>
         </View>
       </View>
 
-      {/* Chapter List */}
       <View style={styles.chapterList}>
         <Text style={styles.sectionTitle}>Chapters</Text>
         {audiobook.audiobook.chapters.map((chapter, index) => (
@@ -403,7 +398,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -8,
     right: -8,
-    backgroundColor: Colors.primary.orange,
+    backgroundColor: Colors.primary.blue,
     borderRadius: 20,
     padding: 8,
   },
@@ -469,7 +464,7 @@ const styles = StyleSheet.create({
   },
   progressFill: {
     height: '100%',
-    backgroundColor: Colors.primary.orange,
+    backgroundColor: Colors.primary.blue,
     borderRadius: 3,
   },
   timeContainer: {
@@ -484,33 +479,41 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 20,
-  },
-  controlButton: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: Colors.neutral.lightGray,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  controlIcon: {
-    fontSize: 18,
-    color: Colors.text.primary,
-  },
-  playButton: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: Colors.primary.orange,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  playIcon: {
-    fontSize: 24,
-    color: Colors.text.inverse,
-  },
-  disabledButton: {
+    marginHorizontal: 20,
+    paddingVertical: 10, 
+},
+controlButton: {
+  width: 48,
+  height: 48,
+  borderRadius: 24,
+  backgroundColor: Colors.neutral.lightGray,
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginHorizontal: 10,
+},
+playButton: {
+  width: 64,
+  height: 64,
+  borderRadius: 32,
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginHorizontal: 15,
+},
+controlIcon: {
+  fontSize: 18,
+  color: Colors.text.primary,
+  textAlign: 'center',
+  lineHeight: 18,
+  includeFontPadding: false, 
+},
+playIcon: {
+  fontSize: 24,
+  color: Colors.text.primary,
+  textAlign: 'center',
+  lineHeight: 24,
+  includeFontPadding: false,
+},
+disabledButton: {
     backgroundColor: Colors.neutral.darkGray,
   },
   chapterList: {
@@ -547,7 +550,7 @@ const styles = StyleSheet.create({
     minWidth: 24,
   },
   activeChapterText: {
-    color: Colors.primary.orange,
+    color: Colors.primary.blue,
   },
   chapterDetails: {
     flex: 1,
@@ -563,7 +566,7 @@ const styles = StyleSheet.create({
   },
   playingIndicator: {
     fontSize: 16,
-    color: Colors.primary.orange,
+    color: Colors.primary.blue,
   },
   errorBanner: {
     backgroundColor: Colors.status.error,
