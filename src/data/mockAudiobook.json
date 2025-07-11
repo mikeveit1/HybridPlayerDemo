@@ -1,0 +1,66 @@
+{
+  "audiobook": {
+    "id": "ab_mobile_architecture_guide",
+    "title": "Mobile Architecture Patterns: Building Scalable React Native Apps",
+    "author": "Dr. Sarah Chen",
+    "narrator": "Michael Rodriguez",
+    "description": "A comprehensive guide to building enterprise-level React Native applications with hybrid architectures.",
+    "duration": 7200,
+    "coverArt": "https://demo-cdn.everand.com/covers/mobile-architecture-guide.jpg",
+    "publishDate": "2024-01-15T00:00:00Z",
+    "language": "en-US",
+    "genre": "Technology",
+    "isbn": "978-1234567890",
+    "chapters": [
+      {
+        "id": "ch_001",
+        "title": "Introduction to Hybrid Mobile Architecture",
+        "startTime": 0,
+        "duration": 900,
+        "audioUrl": "https://demo-audio.everand.com/ch1.mp3"
+      },
+      {
+        "id": "ch_002", 
+        "title": "React Native vs Native: Making the Right Choice",
+        "startTime": 900,
+        "duration": 1080,
+        "audioUrl": "https://demo-audio.everand.com/ch2.mp3"
+      },
+      {
+        "id": "ch_003",
+        "title": "Building Native Modules and Bridges",
+        "startTime": 1980,
+        "duration": 1200,
+        "audioUrl": "https://demo-audio.everand.com/ch3.mp3"
+      }
+    ],
+    "playbackInfo": {
+      "bitrate": 128,
+      "format": "mp3",
+      "qualityLevels": {
+        "high": {
+          "bitrate": 256,
+          "baseUrl": "https://demo-audio.everand.com/hq/"
+        },
+        "medium": {
+          "bitrate": 128,
+          "baseUrl": "https://demo-audio.everand.com/mq/"
+        }
+      }
+    },
+    "userProgress": {
+      "currentPosition": 0,
+      "currentChapter": "ch_001",
+      "bookmarkedPositions": [],
+      "completedChapters": [],
+      "lastPlayedAt": null
+    },
+    "metadata": {
+      "fileSize": 115200,
+      "downloadable": true,
+      "streamingRequired": false,
+      "drm": false,
+      "tags": ["technology", "mobile", "react-native", "architecture"]
+    }
+  }
+}
