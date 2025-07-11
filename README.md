@@ -1,4 +1,21 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Hybrid Audio Player Demo
+
+A React Native demonstration showcasing hybrid architecture patterns for building a cross-platform audiobook player.
+
+## Architecture
+
+- **Frontend**: React Native with TypeScript
+- **iOS Audio**: Native Swift module using AVAudioPlayer
+- **Android Audio**: Native Kotlin module using MediaPlayer
+- **Bridge**: React Native bridge for seamless JS ↔ Native communication
+
+## Features
+
+- Cross-platform audiobook playback
+- Chapter navigation
+- Progress tracking
+- Modern UI with dark theme
+- Real-time progress updates from native audio engines
 
 # Getting Started
 
