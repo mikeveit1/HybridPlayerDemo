@@ -17,7 +17,7 @@ export const PlayerScreen: React.FC = () => {
       
       <View style={styles.header}>
         <Text style={styles.appName}>Hybrid Player Demo</Text>
-        <Text style={styles.secondaryText}>React Native UI + Native {Platform.OS == 'ios' ? 'iOS' : 'android'} Player</Text>
+        <Text style={styles.secondaryText}>React Native UI + Native {Platform.OS == 'ios' ? 'iOS' : 'Android'} Player</Text>
       </View>
       
       <AudioPlayer />
