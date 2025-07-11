@@ -13,6 +13,7 @@ import {
 import { Colors } from '../constants/colors';
 import { useAudiobook } from '../hooks/useAudiobook';
 import { PlayerState } from '../types';
+import { formatTime } from '../assets/utils/formatTime';
 
 const { AudioPlayerModule } = NativeModules;
 
@@ -189,12 +190,6 @@ export const AudioPlayer: React.FC = () => {
     if (currentChapterIndex > 0) {
       setCurrentChapterIndex(prev => prev - 1);
     }
-  };
-
-  const formatTime = (seconds: number): string => {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
   if (audiobookLoading) {
