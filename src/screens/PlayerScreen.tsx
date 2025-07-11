@@ -49,23 +49,4 @@ const styles = StyleSheet.create({
     color: Colors.text.secondary,
     textAlign: 'center',
   },
-  tabContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 40,
-  },
-  activeTab: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: Colors.text.primary,
-    borderBottomWidth: 2,
-    borderBottomColor: Colors.primary.blue,
-    paddingBottom: 4,
-  },
-  inactiveTab: {
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.text.secondary,
-    paddingBottom: 4,
-  },
 });
