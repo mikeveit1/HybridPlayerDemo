@@ -1,5 +1,5 @@
 import { AudiobookResponse } from '../types';
-import { mockAudiobook } from '../data/mockAudiobook';  // Updated import
+import { mockAudiobook } from '../data/mockAudiobook';
 
 export class AudiobookService {
   static async getAudiobook(id: string): Promise<AudiobookResponse> {

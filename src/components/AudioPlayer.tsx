@@ -214,7 +214,6 @@ export const AudioPlayer: React.FC = () => {
     );
   }
 
-  // Calculate time remaining
   const totalDuration = audiobook.audiobook.chapters.reduce((acc, chapter) => acc + chapter.duration, 0);
   const remainingTime = totalDuration - (playerState.position + 
     audiobook.audiobook.chapters.slice(0, currentChapterIndex).reduce((acc, chapter) => acc + chapter.duration, 0));
