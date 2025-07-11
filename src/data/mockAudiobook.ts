@@ -7,7 +7,7 @@ export const mockAudiobook = {
     author: "Nader Dabit",
     narrator: "Eleven Labs",
     description: "Developing iOS and Android apps with JavaScript. Learn to build cross-platform mobile applications using React Native.",
-    duration: 7200,
+    duration: 18,
     coverArt: require('../assets/images/audiobook-cover.jpg') as ImageSourcePropType,
     publishDate: "2019-03-01T00:00:00Z",
     language: "en-US",
@@ -18,21 +18,21 @@ export const mockAudiobook = {
         id: "ch_001",
         title: "Getting Started with React Native",
         startTime: 0,
-        duration: 45,
+        duration: 7,
         audioFile: require('../assets/audio/chapter1.mp3')
       },
       {
         id: "ch_002", 
         title: "Understanding React", 
-        startTime: 45,
-        duration: 38,
+        startTime: 7,
+        duration: 6,
         audioFile: require('../assets/audio/chapter2.mp3')
       },
       {
         id: "ch_003",
         title: "Building Your First App",
-        startTime: 83,
-        duration: 52,
+        startTime: 13,
+        duration: 5,
         audioFile: require('../assets/audio/chapter3.mp3')
       },
     ],

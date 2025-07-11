@@ -1,51 +1,59 @@
 export const Colors = {
-  primary: {
-    orange: '#FF6B35',
-    darkOrange: '#E55A2B',
-    lightOrange: '#FF8A65',
-  },
-  secondary: {
-    teal: '#00BFA6',
-    darkTeal: '#00A693',
-    lightTeal: '#26C6DA',
-  },
-  neutral: {
-    white: '#FFFFFF',
-    lightGray: '#F8F9FA',
-    mediumGray: '#E9ECEF',
-    darkGray: '#6C757D',
-    charcoal: '#343A40',
-    black: '#212529',
+  background: {
+    primary: '#1A1A1A',
+    secondary: '#2A2A2A',
+    card: '#2C2C2E',
   },
   text: {
-    primary: '#212529',
-    secondary: '#6C757D',
-    light: '#ADB5BD',
-    inverse: '#FFFFFF',
-  },
-  background: {
     primary: '#FFFFFF',
-    secondary: '#F8F9FA',
-    tertiary: '#E9ECEF',
+    secondary: '#8E8E93',
+    tertiary: '#6D6D70',
+    inverse: '#1A1A1A',
+  },
+  primary: {
+    orange: '#007AFF',
+    blue: '#32ADE6',
+  },
+  neutral: {
+    lightGray: '#48484A',
+    mediumGray: '#3A3A3C',
+    darkGray: '#2C2C2E',
   },
   status: {
-    success: '#28A745',
-    warning: '#FFC107',
-    error: '#DC3545',
-    info: '#17A2B8',
-  },
-  player: {
-    progressBar: '#FF6B35',
-    progressBackground: '#E9ECEF',
-    controlActive: '#FF6B35',
-    controlInactive: '#6C757D',
-    timeText: '#343A40',
+    error: '#FF453A',
+    success: '#30D158',
   },
   shadow: {
-    light: 'rgba(0, 0, 0, 0.1)',
-    medium: 'rgba(0, 0, 0, 0.15)',
-    dark: 'rgba(0, 0, 0, 0.25)',
-  },
-} as const;
+    light: '#000000',
+  }
+};
 
 export type ColorKeys = keyof typeof Colors;
+
+export const theme = {
+  colors: {
+    background: '#1A1A1A',
+    surface: '#2A2A2A', 
+    primary: '#FFFFFF',
+    secondary: '#A0A0A0',
+    accent: '#007AFF',
+    border: '#3A3A3A'
+  },
+  typography: {
+    title: {
+      fontSize: 28,
+      fontWeight: '700',
+      color: '#FFFFFF'
+    },
+    subtitle: {
+      fontSize: 16,
+      fontWeight: '400', 
+      color: '#A0A0A0'
+    },
+    body: {
+      fontSize: 14,
+      fontWeight: '400',
+      color: '#FFFFFF'
+    }
+  }
+}
