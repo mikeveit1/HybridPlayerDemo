@@ -69,7 +69,6 @@ class AudioPlayerModule: RCTEventEmitter {
     
     @objc
     func play(_ resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
-        print("SWIFT PLAY CALLED")
         guard let player = audioPlayer else {
             reject("NO_PLAYER", "No audio player available", nil)
             return
@@ -229,17 +228,13 @@ class AudioPlayerModule: RCTEventEmitter {
     }
     
     private func startProgressTimer() {
-        print("📅 Starting timer")
         stopProgressTimer()
         
-        // Ensure we're on the main queue and use the main run loop
         DispatchQueue.main.async { [weak self] in
             self?.progressTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
-                print("⏰ Timer tick")
                 self?.updateProgress()
             }
             
-            // Add the timer to the main run loop
             if let timer = self?.progressTimer {
                 RunLoop.main.add(timer, forMode: .common)
             }
@@ -252,7 +247,6 @@ class AudioPlayerModule: RCTEventEmitter {
     }
     
     private func updateProgress() {
-        print("📊 Sending progress")
         guard let player = audioPlayer else { return }
         
         sendEvent(withName: "onProgressUpdate", body: [
@@ -270,7 +264,6 @@ extension AudioPlayerModule: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         stopProgressTimer()
         
-        // Set progress to 100% when finished
         sendEvent(withName: "onProgressUpdate", body: [
             "position": player.duration,
             "duration": player.duration
