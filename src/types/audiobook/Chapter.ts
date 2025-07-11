@@ -3,5 +3,5 @@ export interface Chapter {
   title: string;
   startTime: number;
   duration: number;
-  audioUrl: string;
+  audioFile: any;
 }

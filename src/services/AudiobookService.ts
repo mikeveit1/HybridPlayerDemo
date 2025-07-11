@@ -1,5 +1,5 @@
 import { AudiobookResponse } from '../types';
-import mockAudiobook from '../data/mockAudiobook.json';
+import { mockAudiobook } from '../data/mockAudiobook';  // Updated import
 
 export class AudiobookService {
   static async getAudiobook(id: string): Promise<AudiobookResponse> {
@@ -9,10 +9,10 @@ export class AudiobookService {
       throw new Error(`Audiobook with id ${id} not found`);
     }
     
-    return mockAudiobook as AudiobookResponse;
+    return mockAudiobook as unknown as AudiobookResponse;
   }
   
   static async getCurrentAudiobook(): Promise<AudiobookResponse> {
-    return this.getAudiobook('ab_mobile_architecture_guide');
+    return this.getAudiobook('react_native_in_action');
   }
 }

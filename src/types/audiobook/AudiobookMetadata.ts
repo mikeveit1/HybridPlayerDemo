@@ -5,7 +5,7 @@ export interface AudiobookMetadata {
   narrator: string;
   description: string;
   duration: number;
-  coverArt: string;
+  coverArt: any;
   publishDate: string;
   language: string;
   genre: string;
