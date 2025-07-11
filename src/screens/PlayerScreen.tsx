@@ -16,9 +16,6 @@ export const PlayerScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Hybrid Audiobook Player</Text>
-        <Text style={styles.headerSubtitle}>
-            React Native UI + Native {Platform.OS.charAt(0).toUpperCase() + Platform.OS.slice(1)} Player
-        </Text>
       </View>
       <AudioPlayer />
     </SafeAreaView>
