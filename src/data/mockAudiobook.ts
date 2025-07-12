@@ -6,7 +6,7 @@ export const mockAudiobook = {
     title: "React Native in Action", 
     author: "Nader Dabit",
     narrator: "Eleven Labs",
-    coverArt: require('../assets/images/audiobook-cover.jpg') as ImageSourcePropType,
+    coverArt: require('../assets/audiobook-cover.jpg') as ImageSourcePropType,
     chapters: [
       {
         id: "ch_001",
