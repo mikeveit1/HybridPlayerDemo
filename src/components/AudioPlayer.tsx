@@ -14,7 +14,7 @@ import {
 import { Colors } from '../constants/colors';
 import { useAudiobook } from '../hooks/useAudiobook';
 import { PlayerState } from '../types';
-import { formatTime } from '../assets/utils/formatTime';
+import { formatTime } from '../utils/formatTime';
 
 const { AudioPlayerModule } = NativeModules;
 
@@ -115,10 +115,8 @@ export const AudioPlayer: React.FC = () => {
     }));
 
     try {
-      const audioSource = Image.resolveAssetSource(currentChapter.audioFile);
-      
       const trackData = {
-        url: audioSource.uri,
+        url: currentChapter.audioFile,
         title: currentChapter.title,
         duration: currentChapter.duration,
         chapterIndex: currentChapterIndex,
