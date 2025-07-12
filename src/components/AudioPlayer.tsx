@@ -163,16 +163,6 @@ export const AudioPlayer: React.FC = () => {
     }
   };
 
-  const seek = async (position: number) => {
-    if (!AudioPlayerModule) return;
-    
-    try {
-      await AudioPlayerModule.seek(position);
-    } catch (error) {
-      console.error('Native seek failed:', error);
-    }
-  };
-
   const nextChapter = async () => {
     if (playerState.isPlaying) {
       await pause();
