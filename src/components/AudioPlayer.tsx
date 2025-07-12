@@ -120,12 +120,7 @@ export const AudioPlayer: React.FC = () => {
         title: currentChapter.title,
         duration: currentChapter.duration,
         chapterIndex: currentChapterIndex,
-        totalChapters: audiobook?.audiobook.chapters.length || 0,
-        bookMetadata: {
-          title: audiobook?.audiobook.title,
-          author: audiobook?.audiobook.author,
-          narrator: audiobook?.audiobook.narrator,
-        }
+        totalChapters: audiobook?.audiobook.chapters.length || 0
       };
 
       await AudioPlayerModule.loadTrack(trackData);
